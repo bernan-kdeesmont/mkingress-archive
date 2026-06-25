@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ng28 · 简明指南与访问说明</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #f6f9fc;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            color: #1a2e3f;
+            line-height: 1.6;
+            padding: 24px 20px 48px;
+        }
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        /* hero 区 */
+        .hero {
+            margin: 12px 0 40px;
+            border-left: 6px solid #2a9d8f;
+            padding-left: 28px;
+        }
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #0b2c36;
+            margin-bottom: 8px;
+        }
+        .hero .sub {
+            font-size: 1rem;
+            color: #3d5a6e;
+            max-width: 600px;
+        }
+
+        /* 卡片网格 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin: 40px 0 32px;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px 22px 26px;
+            box-shadow: 0 6px 16px rgba(42, 157, 143, 0.07);
+            transition: transform 0.1s ease, box-shadow 0.2s;
+            border: 1px solid rgba(42, 157, 143, 0.12);
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(42, 157, 143, 0.12);
+        }
+        .card .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #e0f2ef;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            color: #2a9d8f;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #14323f;
+        }
+        .card p {
+            font-size: 0.92rem;
+            color: #2f4b5e;
+            margin-bottom: 10px;
+        }
+        .card .meta {
+            font-size: 0.8rem;
+            color: #6b8599;
+            border-top: 1px solid #e7edf2;
+            padding-top: 10px;
+            margin-top: 6px;
+        }
+
+        /* 摘要 / 指南区域 */
+        .guide-section {
+            background: #ffffffd6;
+            backdrop-filter: blur(2px);
+            border-radius: 28px;
+            padding: 32px 28px;
+            margin: 28px 0;
+            border: 1px solid #d6e6e9;
+        }
+        .guide-section h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0b323f;
+            margin-bottom: 18px;
+            border-bottom: 2px solid #2a9d8f40;
+            padding-bottom: 6px;
+            display: inline-block;
+        }
+        .guide-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .guide-section li {
+            padding: 10px 0 10px 26px;
+            position: relative;
+            font-size: 0.95rem;
+            color: #1d3f4e;
+            border-bottom: 1px solid #e4edf0;
+        }
+        .guide-section li::before {
+            content: "▹";
+            position: absolute;
+            left: 4px;
+            color: #2a9d8f;
+            font-weight: 700;
+        }
+        .guide-section li:last-child {
+            border-bottom: none;
+        }
+
+        /* 提示条 */
+        .notice-bar {
+            background: #e8f4f1;
+            border-radius: 60px;
+            padding: 18px 28px;
+            margin: 36px 0 30px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px 16px;
+            border: 1px solid #b8d9d2;
+        }
+        .notice-bar .badge {
+            background: #2a9d8f;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+        }
+        .notice-bar p {
+            font-size: 0.93rem;
+            color: #1d4852;
+            margin: 0;
+            flex: 1;
+            min-width: 200px;
+        }
+        .notice-bar a {
+            color: #0f5b61;
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-color: #a8cdc5;
+        }
+        .notice-bar a:hover {
+            color: #1d7a70;
+        }
+
+        /* FAQ 摘要 */
+        .faq-mini {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 28px;
+            margin: 20px 0 10px;
+        }
+        .faq-item {
+            background: white;
+            border-radius: 18px;
+            padding: 16px 18px;
+            border-left: 4px solid #2a9d8f;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+        .faq-item strong {
+            display: block;
+            font-size: 0.95rem;
+            color: #0e3645;
+            margin-bottom: 4px;
+        }
+        .faq-item span {
+            font-size: 0.88rem;
+            color: #3c6375;
+        }
+
+        /* 链接嵌入句 */
+        .sentence-link {
+            background: white;
+            border-radius: 24px;
+            padding: 20px 26px;
+            margin: 32px 0 24px;
+            border: 1px solid #d5e3e0;
+            font-size: 1rem;
+            color: #1f3e4b;
+        }
+        .sentence-link a {
+            color: #1a7b70;
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            text-decoration-thickness: 1.5px;
+            text-decoration-color: #7cb9ad;
+        }
+        .sentence-link a:hover {
+            color: #0f5249;
+            text-decoration-color: #2a9d8f;
+        }
+
+        /* 响应式 */
+        @media (max-width: 700px) {
+            body { padding: 18px 14px 40px; }
+            .hero h1 { font-size: 1.8rem; }
+            .hero { padding-left: 18px; }
+            .grid { gap: 18px; }
+            .card { padding: 20px; }
+            .guide-section { padding: 24px 18px; }
+            .notice-bar { border-radius: 28px; padding: 16px 20px; }
+            .faq-mini { grid-template-columns: 1fr; gap: 14px; }
+            .sentence-link { padding: 16px 18px; }
+        }
+        @media (max-width: 420px) {
+            .hero h1 { font-size: 1.5rem; }
+        }
+
+        /* 微装饰 */
+        .accent-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #2a9d8f;
+            border-radius: 50%;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        footer {
+            margin-top: 48px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #688394;
+            border-top: 1px solid #d6e3e0;
+            padding-top: 28px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- hero -->
+    <div class="hero">
+        <h1>ng28 · 使用简明指南</h1>
+        <div class="sub">从访问准备到场景建议，一份信息密度适中的产品说明。</div>
+    </div>
+
+    <!-- 网格卡片：亮点 & 属性 -->
+    <div class="grid">
+        <div class="card">
+            <div class="icon">⚡</div>
+            <h3>轻量聚合</h3>
+            <p>界面直观，核心功能围绕信息浏览与导航设计。无须额外配置，浏览器即开即用。</p>
+            <div class="meta">适用设备 · 桌面 / 移动端</div>
+        </div>
+        <div class="card">
+            <div class="icon">🧩</div>
+            <h3>模块化入口</h3>
+            <p>页面结构清晰，频道与内容区隔明确。适合快速查找特定方向或主题资源。</p>
+            <div class="meta">推荐场景 · 日常检索 / 信息比对</div>
+        </div>
+        <div class="card">
+            <div class="icon">🔒</div>
+            <h3>访问基线</h3>
+            <p>标准 HTTPS 协议，基础传输加密。建议用户使用主流浏览器并保持系统更新。</p>
+            <div class="meta">安全提醒 · 网络环境自检</div>
+        </div>
+        <div class="card">
+            <div class="icon">📌</div>
+            <h3>简洁通知</h3>
+            <p>无过度弹窗或自动跳转。操作路径相对直接，减少不必要的中间步骤。</p>
+            <div class="meta">交互风格 · 低干扰型</div>
+        </div>
+    </div>
+
+    <!-- 指南摘要 -->
+    <div class="guide-section">
+        <h2>▎访问与使用建议</h2>
+        <ul>
+            <li>建议通过稳定宽带或优质移动网络访问，避免公共 Wi‑Fi 下传输敏感信息。</li>
+            <li>首次访问时可先浏览主导航区块，了解信息分层；部分页面适配移动端视图。</li>
+            <li>如遇加载异常，可尝试清除浏览器缓存或禁用部分插件后再刷新。</li>
+            <li>平台不存储用户个人浏览记录，客户端行为由浏览器常规机制管理。</li>
+            <li>功能以内容导航为主，未集成支付、注册等交互模块，降低信息暴露面。</li>
+        </ul>
+    </div>
+
+    <!-- 带链接的提示条 -->
+    <div class="notice-bar">
+        <span class="badge">访问说明</span>
+        <p>若希望查看平台当前界面与内容结构，可直接前往 <a href="https://cn-cnwebs-ng28.com">ng28</a>，建议在地址栏手动确认协议与域名。</p>
+    </div>
+
+    <!-- 场景 & FAQ 摘要（混合卡片） -->
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin: 28px 0 20px;">
+        <div style="flex: 1; min-width: 200px;">
+            <div style="background: white; border-radius: 24px; padding: 22px 24px; height: 100%; border: 1px solid #caddd8;">
+                <h3 style="font-size: 1rem; font-weight: 600; color: #0b323f; margin-bottom: 12px; display: flex; align-items: center;"><span class="accent-dot"></span>典型使用场景</h3>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li style="padding: 6px 0; font-size: 0.9rem; color: #1f404f; border-bottom: 1px dashed #dbeae6;">· 信息聚合浏览与频道筛选</li>
+                    <li style="padding: 6px 0; font-size: 0.9rem; color: #1f404f; border-bottom: 1px dashed #dbeae6;">· 横向对比不同版块内容布局</li>
+                    <li style="padding: 6px 0; font-size: 0.9rem; color: #1f404f;">· 快速了解站点结构及更新频率</li>
+                </ul>
+            </div>
+        </div>
+        <div style="flex: 1.5; min-width: 240px;">
+            <div style="background: white; border-radius: 24px; padding: 22px 24px; height: 100%; border: 1px solid #caddd8;">
+                <h3 style="font-size: 1rem; font-weight: 600; color: #0b323f; margin-bottom: 12px; display: flex; align-items: center;"><span class="accent-dot"></span>FAQ 摘录</h3>
+                <div class="faq-mini" style="margin: 0;">
+                    <div class="faq-item" style="border-left-color: #77b9ae; box-shadow: none; padding: 12px 14px;">
+                        <strong>是否需要注册？</strong>
+                        <span>当前版本未集成账户系统，直接浏览即可。</span>
+                    </div>
+                    <div class="faq-item" style="border-left-color: #77b9ae; box-shadow: none; padding: 12px 14px;">
+                        <strong>移动端适配如何？</strong>
+                        <span>主要页面采用响应式布局，部分内页建议横屏查看。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 链接自然嵌入句子 -->
+    <div class="sentence-link">
+        <span style="display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap;">
+            <span>对于希望进一步了解内容分类与更新节奏的用户，</span>
+            <span>可以通过 <a href="https://cn-cnwebs-ng28.com">ng28</a> 直接查看当前信息结构。</span>
+            <span style="color: #537584; font-size: 0.88rem;">（页面以中文内容为主，导航标识清晰）</span>
+        </span>
+    </div>
+
+    <!-- 底部说明 -->
+    <footer>
+        <span>本页为产品说明页 · 内容版本 2025 · 非官方运营页面</span>
+    </footer>
+
+</div>
+</body>
+</html>
